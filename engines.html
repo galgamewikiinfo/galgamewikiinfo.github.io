@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galgame 引擎识别与 PC/手机模拟器运行教程 - KRKR、Artemis 与 LE 转区排错</title>
+  <meta name="description" content="超详细 Galgame PC 端 Locale Emulator 转区教程、汉化补丁与乱码解决方案，以及安卓/iOS 手机端 KRKR (Kirikiroid2)、Artemis (Artroid+)、ONS 引擎识别与 ZArchiver 解压排错指南。">
+  <meta name="keywords" content="Galgame运行教程,Locale Emulator教程,Galgame乱码解决,KRKR模拟器,Kirikiroid2,Artemis引擎,Artroid,xp3转data,ZArchiver解压">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="樱空 Galgame 百科志">
+  <meta property="og:title" content="Galgame 引擎识别与 PC/手机模拟器运行教程 - KRKR、Artemis 与 LE 转区排错">
+  <meta property="og:description" content="一眼看懂 .xp3 与 root.pfs 引擎文件，彻底搞定 Windows 转区闪退、汉化补丁乱码以及手机端模拟器白屏报错。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23f0437e'/%3E%3Cstop offset='100%25' stop-color='%233b6ef5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 49C20 40 13 33 13 24a10 10 0 0 1 19-4.5A10 10 0 0 1 51 24c0 9-7 16-19 25z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳至正文内容</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand-logo" href="index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20.5s-7.5-4.8-7.5-10.2A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7.5 3.3c0 5.4-7.5 10.2-7.5 10.2z"/>
+          </svg>
+        </span>
+        <span>
+          <span>樱空 Galgame 百科志</span>
+          <span class="brand-sub">美少女游戏 · 视觉小说攻略导航</span>
+        </span>
+      </a>
+
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="展开或收起导航菜单">
+      <label class="nav-toggle-label" for="nav-toggle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        菜单
+      </label>
+
+      <div class="nav-wrapper">
+        <nav class="site-nav" aria-label="主导航">
+          <a href="index.html">百科首页</a>
+          <a href="ranking.html">2026 精选榜</a>
+          <a href="engines.html" aria-current="page">运行教程</a>
+          <a href="guide.html">入坑指南</a>
+          <a href="glossary.html">术语与社团</a>
+        </nav>
+        <a class="header-cta" href="https://game123.download/" target="_blank" rel="noopener noreferrer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>资源下载</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="page-hero">
+      <div class="container">
+        <nav aria-label="面包屑导航">
+          <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a itemprop="item" href="index.html"><span itemprop="name">百科首页</span></a>
+              <meta itemprop="position" content="1">
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name">运行教程</span>
+              <meta itemprop="position" content="2">
+            </li>
+          </ol>
+        </nav>
+        <h1>Galgame 引擎识别与 PC / 手机模拟器运行教程</h1>
+        <p class="section-desc">
+          不同游戏采用截然不同的开发引擎。先通过文件夹内的核心特征文件辨认引擎，再套用对应的 PC 转区方案或手机模拟器配置，即可彻底告别乱码、闪退与报错。
+        </p>
+      </div>
+    </section>
+
+    <article itemscope itemtype="https://schema.org/Article">
+      <meta itemprop="headline" content="Galgame 引擎识别与 PC/手机模拟器运行教程">
+      <meta itemprop="inLanguage" content="zh-CN">
+      <meta itemprop="description" content="系统讲解 KRKR、Artemis、ONS 等主流 Galgame 引擎文件特征，以及 PC Locale Emulator 转区与安卓 Kirikiroid2、Artroid+ 模拟器排错方法。">
+
+      <!-- Engine Identification Table -->
+      <section class="section" id="engine-matrix" itemprop="articleBody">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <span class="section-eyebrow">第一步 · 看文件辨引擎</span>
+              <h2>主流 Galgame 常见引擎特征与全平台适配对照表</h2>
+              <p class="section-desc">手机模拟器只能运行与其对应的引擎，不可混用。解压后打开游戏文件夹，对照下表即可快速识别。</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>引擎名称</th>
+                  <th>文件夹特征文件</th>
+                  <th>PC 运行方案</th>
+                  <th>Android / iOS 方案</th>
+                  <th>关键注意事项</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>KRKR / 吉里吉里</strong><br><small>Krkr2 / KrkrZ</small></td>
+                  <td>大量 <code>.xp3</code> 文件（如 <code>data.xp3</code>、<code>video.xp3</code>）</td>
+                  <td>直接运行或 LE 转日区</td>
+                  <td>安卓：<strong>Kirikiroid2</strong><br>iOS：<strong>XP3Player</strong></td>
+                  <td>部分作品需重命名主包为 <code>data.xp3</code> 并放入手机专属补丁 <code>patch.tjs</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Artemis</strong></td>
+                  <td>含有 <code>root.pfs</code> 文件</td>
+                  <td>直接运行或 LE 转日区</td>
+                  <td>专用：<strong>Artroid+</strong>（如 3.0 版）<br>综合：Tyranor 模拟器</td>
+                  <td>路径必须严格全英文且无空格；含复杂 Emote 动态立绘需更新新版 Artroid+</td>
+                </tr>
+                <tr>
+                  <td><strong>ONScripter (ONS)</strong></td>
+                  <td>含有 <code>arc.nsa</code> / <code>nscript.dat</code></td>
+                  <td>原生或 ONScripter-JH</td>
+                  <td><strong>ONS模拟器</strong> / ONScripter Plus</td>
+                  <td>早期老作与民间移植最常见，对手机配置要求极低</td>
+                </tr>
+                <tr>
+                  <td><strong>Ren'Py / Unity</strong></td>
+                  <td><code>renpy/</code> 目录或 <code>UnityPlayer.dll</code></td>
+                  <td>原生跨平台直接启动</td>
+                  <td>多数提供官方或民间 <code>.apk</code> 直装包</td>
+                  <td>原生支持多语言与高分辨率，几乎不需要额外转区工具</td>
+                </tr>
+                <tr>
+                  <td><strong>Windows 原生独占</strong><br><small>Majiro / Ethornell / YU-RIS 等</small></td>
+                  <td>仅含 <code>.exe</code> 与专用加密封包（如 <code>.arc</code> / <code>.ypf</code>）</td>
+                  <td><strong>Locale Emulator</strong> 转日区启动</td>
+                  <td>无直接通用模拟器，需借助 <strong>Winlator / Exagear</strong> 虚拟机</td>
+                  <td>如没有专用手机移植，建议优先直接在 Windows 电脑上游玩</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PC Locale Emulator Guide -->
+      <section class="section section-soft" id="pc-le">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <span class="section-eyebrow">PC 端核心攻略 · Locale Emulator</span>
+              <h2>Windows PC 端转区、乱码与汉化补丁排错指南</h2>
+              <p class="section-desc">解决“无法启动”、“文件路径错误”以及满屏问号方块字的最主流方案是使用 Locale Emulator（简称 LE）。</p>
+            </div>
+          </div>
+
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div>
+                <h3>补齐系统必要运行库（防止报错无响应）</h3>
+                <p>在运行任意转区工具或老游戏前，请确保电脑已安装 <code>.NET Framework</code>（建议 4.8 或更高版本）以及 <code>Microsoft Visual C++ Redistributable</code>（推荐安装微软常用运行库合集，避免缺失 <code>msvcp*.dll</code>）。</p>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div>
+                <h3>将 Locale Emulator 解压至纯英文路径</h3>
+                <p>根据系统选择对应版本（Win10 推荐 <code>v2.4.1.0</code>，Win11 推荐 <code>v2.5.0.1</code> 及以上）。<strong>严禁在含中文的桌面或下载临时目录中直接解压安装</strong>，请放入类似 <code>D:\Tools\LocaleEmulator\</code> 的全英文文件夹中。</p>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div>
+                <h3>以管理员身份运行 LEInstaller.exe 完成安装</h3>
+                <p>右键点击 <code>LEInstaller.exe</code> 选择“以管理员身份运行”，在弹窗中点击 <strong>Install / Upgrade</strong>。安装过程中 Windows 资源管理器（桌面与任务栏）会短暂闪烁重启，属于正常向系统右键菜单注入模块的机制。</p>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div>
+                <h3>确保游戏路径全英文并右键转日区运行</h3>
+                <p>这是 90% 报错的根源！整个路径（包括上层目录和游戏目录）不能出现中文或全角标点。例如应改为 <code>D:\Games\Galgame\Senren\game.exe</code>。随后右键游戏主程序 → <code>Locale Emulator</code> → <strong>Run in Japanese</strong>（若无法存档请选择 <strong>Run in Japanese (Admin)</strong>）。</p>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-num">5</div>
+              <div>
+                <h3>正确处理汉化补丁与杀毒软件误报</h3>
+                <ul>
+                  <li><strong>完全汉化硬盘版</strong>：大多数已移除日文区域检测，<strong>直接双击运行即可</strong>；误用 LE 反而可能导致字库调用异常。</li>
+                  <li><strong>挂载型/外挂汉化补丁</strong>（如部分基于日文本体的补丁）：若打补丁后仍出现方块乱码或提示缺失 Shift-JIS 字符集，则<strong>仍需用 LE 转日区运行</strong>。</li>
+                  <li><strong>杀毒误报</strong>：LE 及部分免 CD/汉化补丁 DLL 可能被 Windows Defender 隔离，请提前把工具与游戏文件夹加入排除项白名单。</li>
+                  <li><strong>一键快捷方式</strong>：在程序上右键 → <code>Locale Emulator</code> → <code>Modify this shortcut</code>，即可生成双击直启动的转区快捷方式。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mobile Simulators Guide -->
+      <section class="section" id="mobile-krkr">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <span class="section-eyebrow">移动端攻略 · Android &amp; iOS</span>
+              <h2>手机端 KRKR (Kirikiroid2) 与 Artemis (Artroid+) 实战指南</h2>
+              <p class="section-desc">按照正确流程解压并规范路径，手机躺平推 Gal 同样流畅稳定。</p>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="badge-row">
+                <span class="badge pink">第 1 步：解压规范</span>
+                <span class="badge gold">重中之重</span>
+              </div>
+              <h3>绝对不要使用网盘“在线解压”</h3>
+              <p>网盘在线解压极易触发文件损坏或内容和谐，而手机自带文件管理器往往不能识别分卷包（如 <code>.part1.rar</code>）或高强度压缩算法。</p>
+              <ul>
+                <li>将所有压缩分卷完整下载至手机本地后，使用专业工具 <strong>ZArchiver</strong> 进行解压。</li>
+                <li>解压后请新建全英文目录（如手机内部存储根目录下的 <code>/Galgames/GameA/</code>），切忌深层嵌套或留在 <code>/Android/data/</code> 受限路径中。</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="badge-row">
+                <span class="badge blue">第 2 步：KRKR 模拟器</span>
+                <span class="badge">.xp3 引擎</span>
+              </div>
+              <h3>Kirikiroid2 常见白屏与闪退修复</h3>
+              <ul>
+                <li><strong>找不到文件/空白</strong>：进入手机“设置 → 应用管理 → Kirikiroid2 → 权限”，开启<strong>全部文件读写权限</strong>；检查目录名是否为纯英文。</li>
+                <li><strong>重命名主包</strong>：若目录中为“启动游戏.xp3”等中文命名，手动改名为 <code>data.xp3</code> 再点击启动。</li>
+                <li><strong>补丁与版本</strong>：部分移植需补齐 <code>patch.tjs</code> / <code>xp3filter.tjs</code>；官方原版停更于 <strong>1.3.9</strong>，高版本安卓闪退可换用适配新系统的社区修改版（如 1.4.x 魔改版）。</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="badge-row">
+                <span class="badge emerald">第 3 步：Artemis 模拟器</span>
+                <span class="badge">root.pfs 引擎</span>
+              </div>
+              <h3>Artroid+ 路径禁忌与动态立绘兼容</h3>
+              <ul>
+                <li><strong>严禁任何非英文字符与空格</strong>：Artemis 模拟器对目录名极度敏感，路径出现中文、日文、韩文或空格往往直接闪退。</li>
+                <li><strong>Emote 动态立绘报错</strong>：带有复杂动态立绘的作品若在旧版或 iOS 上报错，请升级至 <strong>Artroid+ 3.0</strong> 等较新版，或改用专门封装的直装版。</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="badge-row">
+                <span class="badge gold">第 4 步：通用细节</span>
+                <span class="badge">字体与存档</span>
+              </div>
+              <h3>文字乱码修复与存档防丢失技巧</h3>
+              <ul>
+                <li><strong>缺字/乱码</strong>：多为手机缺少指定字体所致。可将常见中文字体（如 <code>simhei.ttf</code> 或 <code>wqy-zenhei.ttf</code>）放入游戏根目录按提示重命名，或在模拟器设置中强行指定外部字体。</li>
+                <li><strong>存档防丢</strong>：确保手机剩余空间充足；务必使用<strong>游戏自带的保存界面（Save）</strong>手动存档，不要长期只依赖模拟器即时存档，以免跨版本更新时存档失效。</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <!-- Engine FAQ -->
+    <section class="section section-soft" id="engine-faq" itemscope itemtype="https://schema.org/FAQPage">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="section-eyebrow">技术 FAQ · 故障排查</span>
+            <h2>引擎与模拟器运行常见疑难解答</h2>
+          </div>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item" open itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <summary itemprop="name">为什么同一台电脑有些游戏直接能打开，有些必须用 Locale Emulator？</summary>
+            <div class="faq-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text">Steam 官方中文版、Unity/Ren'Py 引擎作品以及去除了区域检测的完全汉化硬盘版通常采用 Unicode 编码，无需转区即可直接运行；而传统日文原版游戏（尤其使用 Shift-JIS 编码的老引擎）在简体中文 Windows 下直接启动会触发编码冲突，必须由 Locale Emulator 模拟日文系统区域环境才能正常读取。</p>
+            </div>
+          </details>
+
+          <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <summary itemprop="name">用 Kirikiroid2 可以运行所有电脑上的 Galgame 吗？</summary>
+            <div class="faq-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text">绝对不可以。Kirikiroid2 仅支持 KRKR（吉里吉里）引擎且包含 .xp3 文件的作品（往往还需要手机端引导补丁）。如果文件夹里是 root.pfs，需要换用 Artroid+；如果是大量非通用 Windows .exe 独占引擎，则需要在电脑运行或通过 Winlator 等容器方案尝试。</p>
+            </div>
+          </details>
+
+          <details class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+            <summary itemprop="name">游戏打开提示找不到存档目录或无法保存设置怎么办？</summary>
+            <div class="faq-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+              <p itemprop="text">在 Windows 上请避免把游戏放在 C:\Program Files 等受系统 UAC 保护的目录，改放到 D:\Games\ 等非系统盘英文路径，并尝试用 LE 的“Run in Japanese (Admin)”启动；在手机端请确认已授予模拟器完整的存储权限且不要放在 /Android/data/ 内部。</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-banner">
+          <div>
+            <h2>运行环境已经就绪，去挑选想玩的作品吧！</h2>
+            <p>无论是想找自带手机适配的整合资源，还是 PC 端完整汉化版，都可以直接点击前往资源导航站。</p>
+          </div>
+          <div class="btn-group">
+            <a class="btn btn-download" href="https://game123.download/" target="_blank" rel="noopener noreferrer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>galgame资源下载</span>
+            </a>
+            <a class="btn btn-secondary" href="ranking.html">返回 2026 精选榜</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-title">樱空 Galgame 百科志</div>
+          <p>专注美少女游戏与视觉小说入门科普、2025–2026 新作资讯整理、PC 转区与手机模拟器技术排错的纯静态 SEO 指南站点。</p>
+        </div>
+        <div>
+          <div class="footer-title">站内专题目录</div>
+          <ul class="footer-links">
+            <li><a href="index.html">Galgame 百科首页</a></li>
+            <li><a href="ranking.html">2026 精选作品排行榜</a></li>
+            <li><a href="engines.html">PC / 手机运行与排错教程</a></li>
+            <li><a href="guide.html">新手 5 步入坑路线</a></li>
+            <li><a href="glossary.html">术语词典与十大社团</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-title">页面锚点直达</div>
+          <ul class="footer-links">
+            <li><a href="https://game123.download/" target="_blank" rel="noopener noreferrer">galgame资源下载（直达入口）</a></li>
+            <li><a href="#engine-matrix">主流引擎特征对照表</a></li>
+            <li><a href="#pc-le">PC Locale Emulator 教程</a></li>
+            <li><a href="#mobile-krkr">手机 KRKR &amp; Artemis 指南</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>纯 HTML5 + CSS3 构建 · 零脚本零跟踪 · 开箱即可部署</span>
+        <span>内容更新至 2026 年 · 仅供视觉小说玩家交流与科普参考</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
